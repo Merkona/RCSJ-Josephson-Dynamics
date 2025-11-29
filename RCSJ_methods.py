@@ -2,7 +2,28 @@
 import numpy as np
 
 class RCSJParams:
-    """Stores RCSJ junction parameters in SI and computes dimensionless values."""
+    """
+    Stores RCSJ junction parameters in SI and computes dimensionless values.
+    All values are floats.
+    
+    Inputs: 
+    Ic - Critical current of JJ
+    C - Junction capacitance
+    R - Shunt resistance
+    I_dc - DC bias current
+    I_ac - AC drive current
+    omega_drive - AC drive frequency
+    phi_drive - AC drive phase offset
+
+    Calculated Values:
+    omega_p - Characteristic plasma frequency
+    beta_c - Stewart-McCumber Parameter (dimensionless measurement of damping)
+    alpha - Dimensionless damping parameter
+    i_dc - Normalized DC bias current
+    i_ac - Normalized AC drive current
+    Omega - Normalized AC drive frequency
+
+    """
 
     def __init__(self, Ic, C, R, I_dc = 0.0, I_ac = 0.0, omega_drive = 0.0, phi_drive = 0.0):
         # Physical parameters
@@ -16,12 +37,15 @@ class RCSJParams:
         self.omega_drive = omega_drive
         self.phi_drive = phi_drive
 
-        self.compute_dimensionless()
         # self. is required to run functions defined within the class.
+        self.compute_dimensionless()
+        
 
 
     def compute_dimensionless(self):
         """Compute dimensionless parameters derived from SI inputs."""
+
+        # Checks that inputs are physically meaningful and won't cause division by zero errors.
         if self.Ic <= 0:
             raise ValueError("Ic must be positive to compute dimensionless parameters.")
         if self.C <= 0:
@@ -36,14 +60,14 @@ class RCSJParams:
         self.beta_c = (2.0 * self.e_charge * self.Ic * (self.R ** 2) * self.C) / self.hbar
 
         # Damping coefficient
-        self.alpha = 1.0 / np.sqrt(self.beta_c) if self.beta_c > 0 else float("inf")
+        self.alpha = 1.0 / np.sqrt(self.beta_c)
 
         # Normalized currents
         self.i_dc = self.I_dc / self.Ic
         self.i_ac = self.I_ac / self.Ic
 
         # Dimensionless drive frequency
-        self.Omega = self.omega_drive / self.omega_p if self.omega_p > 0 else 0.0
+        self.Omega = self.omega_drive / self.omega_p
 
 
 class RCSJModel(RCSJParams):
