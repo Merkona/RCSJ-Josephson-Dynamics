@@ -66,3 +66,41 @@ class TestRCSJModel(unittest.TestCase):
         expected = 1.0 - np.cos(phi) - self.model.i_dc * phi
 
         self.assertAlmostEqual(U, expected)
+
+class TestRCSJSolve(unittest.TestCase):
+    """Testing the RCSJSolve class"""
+
+    def test_solver_1(self):
+        jj = RCSJSolve(Ic=1e-6, C=1e-12, R=1e3)
+
+        y0 = [0.0, 0.0]
+        tau_span = (0.0, 1.0)
+
+        sol = jj.solve(y0=y0, tau_span=tau_span)
+
+        self.assertTrue(sol.success)
+        self.assertGreater(sol.t.shape[0], 1)
+
+    def test_solver_2(self):
+        jj = RCSJSolve(
+            Ic=1e-6,
+            C=1e-12,
+            R=1e3,
+            I_dc=0.5e-6,
+            I_ac=0.2e-6,
+            omega_drive=2e9,
+            phi_drive=0.0,
+        )
+        
+        y0 = [0.0, 0.0]
+        tau_span = (0.0, 10.0)
+        t_eval = np.linspace(0, 10, 100)
+
+        sol = jj.solve(y0=y0, tau_span=tau_span, t_eval=t_eval)
+
+        self.assertTrue(sol.success)
+        self.assertEqual(sol.t.shape, (100,))
+        self.assertEqual(sol.y.shape, (2, 100))  # phi and phi_dot
+
+if __name__ == "__main__":
+    unittest.main()
