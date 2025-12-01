@@ -23,83 +23,105 @@ Using a Resistively and Capacitively Shunted Junction (RCSJ) model, we can explo
 A Josephson Junction is comprised of two superconducting materials with a thin insulator placed between them. When these two materials become superconducting, a current flows across the insulating barrier without any applied voltage, and when a voltage is applied it causes this current to oscillate.
 
 The behavior of these phenomenon is captured in the **Josephson Equations**:
-$$
+\[
 \begin{align}
 &I(t)=I_{c}\sin(\mathcal{\varphi}(t)) \\
 &\frac{ \partial \varphi }{ \partial t } = \frac{2eV(t)}{\hbar}
 \end{align}
-$$
+\]
 
 Where
-- $I(t)$ is the current across the junction
-- $V(t)$ is the voltage across the junction
-- $I_{c}$ is a parameter known as the critical current
+- \(I(t)\) is the current across the junction  
+- \(V(t)\) is the voltage across the junction  
+- \(I_{c}\) is a parameter known as the critical current  
 
-To derive these, we must start with the order parameters of the superconductors. The Ginzburg-Landau order parameter can be taken as the wavefunction of a Cooper pair in superconductor $A$ or $B$, and takes the following form:
-$$
-\begin{align}
-\psi_{A}=\sqrt{ n_{A} }e^{i\phi_{A}}\text{, }\psi_{B}=\sqrt{ n_{B} }e^{i\phi_{B}}
-\end{align}
-$$
-Where $n_{A\text{, }B}$ is the density of Cooper pairs, and $\phi_{A\text{, }B}$ is the phase of each wavefunction. 
+To derive these, we must start with the order parameters of the superconductors. The Ginzburg–Landau order parameter can be taken as the wavefunction of a Cooper pair in superconductor \(A\) or \(B\), and takes the following form:
+\[
+\psi_{A}=\sqrt{ n_{A} }e^{i\phi_{A}},\qquad \psi_{B}=\sqrt{ n_{B} }e^{i\phi_{B}}
+\]
+Where \(n_{A,B}\) is the density of Cooper pairs, and \(\phi_{A,B}\) is the phase of each wavefunction.
 
-If we apply a voltage across the junction, then since each Cooper pair consists of 2 electrons, and thus has charge $2e$, we get an energy difference of $2eV$.
+If we apply a voltage across the junction, then since each Cooper pair consists of 2 electrons, and thus has charge \(2e\), we get an energy difference of \(2eV\).
 
-Using the Schrodinger equation then gives us two differential equations to describe this system. A system of this form is called a two-level system.
-$$
-\begin{align}
-i\hbar \frac{ \partial  }{ \partial t } \begin{pmatrix}
-\sqrt{ n_{A} }e^{i\phi_{A}} \\
-\sqrt{ n_{B} }e^{i\phi_{B}}
-\end{pmatrix}=\begin{pmatrix}
-eV & K \\
-K & -eV 
-\end{pmatrix}\begin{pmatrix}
+Using the Schrödinger equation then gives us two differential equations to describe this system. A system of this form is called a two-level system.
+\[
+i\hbar \frac{ \partial  }{ \partial t }
+\begin{pmatrix}
 \sqrt{ n_{A} }e^{i\phi_{A}} \\
 \sqrt{ n_{B} }e^{i\phi_{B}}
 \end{pmatrix}
-\end{align}
-$$
-Here $K$ is a parameter intrinsic to the junction. 
+=
+\begin{pmatrix}
+eV & K \\
+K & -eV 
+\end{pmatrix}
+\begin{pmatrix}
+\sqrt{ n_{A} }e^{i\phi_{A}} \\
+\sqrt{ n_{B} }e^{i\phi_{B}}
+\end{pmatrix}
+\]
+Here \(K\) is a parameter intrinsic to the junction.
 
 To solve the first equation, we see that
-$$
-\begin{align}
-\frac{ \partial  }{ \partial t } (\sqrt{ n_{A} }e^{i\phi_{A}})=\dot{\sqrt{ n_{A} }}e^{i\phi_{A}}+i\sqrt{ n_{A} }\dot{\phi_{A}}e^{i\phi_{A}}=e^{i\phi_{A}}(\dot{\sqrt{ n_{A} }}+i\sqrt{ n_{A} }\dot{\phi_{A}})
-\end{align}
-$$
-Plugging this into the SE gives
-$$
-\begin{align}
-e^{i\phi_{A}}(\dot{\sqrt{ n_{A} }}+i\sqrt{ n_{A} }\dot{\phi_{A}})&=\frac{1}{i\hbar}(eV\sqrt{ n_{A} }e^{i\phi_{A}}+K\sqrt{ n_{B} }e^{i\phi_{B}}) \\
-(\dot{\sqrt{ n_{A} }}+i\sqrt{ n_{A} }\dot{\phi_{A}})&=\frac{1}{i\hbar}(eV\sqrt{ n_{A} }+K\sqrt{ n_{B} }e^{i\varphi})
-\end{align}
-$$
-where $\varphi=\phi_{B}-\phi_{A}$ is the Josephson phase.
+\[
+\frac{ \partial  }{ \partial t } (\sqrt{ n_{A} }e^{i\phi_{A}})
+=\dot{\sqrt{ n_{A} }}e^{i\phi_{A}}
++i\sqrt{ n_{A} }\dot{\phi_{A}}e^{i\phi_{A}}
+=e^{i\phi_{A}}(\dot{\sqrt{ n_{A} }}+i\sqrt{ n_{A} }\dot{\phi_{A}})
+\]
 
-If we add the conjugate of this equation to itself, we can get an equation for $\dot{\sqrt{ n_{A} }}$,
-$$
-\begin{align}
-&2\dot{\sqrt{n_{A} }}=\frac{2\dot{n}_{A}}{2\sqrt{ n_{A} }}=\frac{K\sqrt{ n_{B} }}{\hbar}2\sin(\varphi) \\
-&\dot{n}_{A}= \frac{2K\sqrt{ n_{A}n_{B} }}{\hbar}\sin(\varphi)
-\end{align}
-$$
-If we instead subtract the two conjugate equations, we can eliminate $\dot{\sqrt{ n_{A} }}$ to get
-$$
-\begin{align}
-\dot{\phi}_{A}= -\frac{1}{\hbar}\left( eV+K\sqrt{ \frac{n_{B}}{n_{A}} } \cos(\varphi)\right)
-\end{align}
-$$
+Plugging this into the Schrödinger equation gives
+\[
+e^{i\phi_{A}}(\dot{\sqrt{ n_{A} }}+i\sqrt{ n_{A} }\dot{\phi_{A}})
+=
+\frac{1}{i\hbar}
+\left(
+eV\sqrt{ n_{A} }e^{i\phi_{A}}
++K\sqrt{ n_{B} }e^{i\phi_{B}}
+\right)
+\]
+
+\[
+(\dot{\sqrt{ n_{A} }}+i\sqrt{ n_{A} }\dot{\phi_{A}})
+=
+\frac{1}{i\hbar}
+\left(
+eV\sqrt{ n_{A} }
++K\sqrt{ n_{B} }e^{i\varphi}
+\right)
+\]
+where \(\varphi=\phi_{B}-\phi_{A}\) is the Josephson phase.
+
+If we add the conjugate of this equation to itself, we can get an equation for \(\dot{\sqrt{ n_{A} }}\),
+\[
+2\dot{\sqrt{n_{A} }}=\frac{2\dot{n}_{A}}{2\sqrt{ n_{A} }}
+=\frac{K\sqrt{ n_{B} }}{\hbar}2\sin(\varphi)
+\]
+\[
+\dot{n}_{A}= \frac{2K\sqrt{ n_{A}n_{B} }}{\hbar}\sin(\varphi)
+\]
+
+If we instead subtract the two conjugate equations, we can eliminate \(\dot{\sqrt{ n_{A} }}\) to get
+\[
+\dot{\phi}_{A}= -\frac{1}{\hbar}
+\left(
+eV+K\sqrt{ \frac{n_{B}}{n_{A}} } \cos(\varphi)
+\right)
+\]
 
 Similarly, we can find
-$$
-\begin{align}
-&\dot{n}_{B}= -\frac{2K\sqrt{ n_{A}n_{B} }}{\hbar}\sin(\varphi) \\
-&\dot{\phi}_{B}= \frac{1}{\hbar}\left( eV-K\sqrt{ \frac{n_{B}}{n_{A}} } \cos(\varphi)\right)
-\end{align}
-$$
+\[
+\dot{n}_{B}= -\frac{2K\sqrt{ n_{A}n_{B} }}{\hbar}\sin(\varphi)
+\]
+\[
+\dot{\phi}_{B}= \frac{1}{\hbar}
+\left(
+eV-K\sqrt{ \frac{n_{B}}{n_{A}} } \cos(\varphi)
+\right)
+\]
 
-Since the time derivative of $n_{A}$ is proportional to current, then if $n_{A}\approx n_{B}$, we get the first Josephson equation, and by combining $\dot{\varphi}=\dot{\phi}_{B}-\dot{\phi}_{A}$ we get the second Josephson equation.
+Since the time derivative of \(n_{A}\) is proportional to current, then if \(n_{A}\approx n_{B}\), we get the first Josephson equation, and by combining \(\dot{\varphi}=\dot{\phi}_{B}-\dot{\phi}_{A}\) we get the second Josephson equation.
+
 
 # Basic Usage
 The folder titled `RCSJ Basis` outlines the classes and methods we use that form the basis for exploring JJs. The foundational python file of this project is `RCSJ_Core.py`, which contains the classes `RCSJParams`, `RCSJModel`, and `RCSJSolve`. These classes work sequentially to set up, model, and solve the relevant ODEs respectively.
