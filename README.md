@@ -42,14 +42,12 @@ $$
 \begin{align}
 \psi_{A}=\sqrt{ n_{A} }e^{i\phi_{A}}\text{, }\psi_{B}=\sqrt{ n_{B} }e^{i\phi_{B}}
 \end{align}
-$$
-Where $n_{A\text{, }B}$ is the density of Cooper pairs, and $\phi_{A\text{, }B}$ is the phase of each wavefunction. 
+$$Where $n_{A\text{, }B}$ is the density of Cooper pairs, and $\phi_{A\text{, }B}$ is the phase of each wavefunction. 
 
 If we apply a voltage across the junction, then since each Cooper pair consists of 2 electrons, and thus has charge $2e$, we get an energy difference of $2eV$.
 
 Using the Schrodinger equation then gives us two differential equations to describe this system. A system of this form is called a two-level system.
-$$
-\begin{align}
+$$\begin{align}
 i\hbar \frac{ \partial  }{ \partial t } \begin{pmatrix}
 \sqrt{ n_{A} }e^{i\phi_{A}} \\
 \sqrt{ n_{B} }e^{i\phi_{B}}
@@ -60,8 +58,8 @@ K & -eV
 \sqrt{ n_{A} }e^{i\phi_{A}} \\
 \sqrt{ n_{B} }e^{i\phi_{B}}
 \end{pmatrix}
-\end{align}
-$$
+\end{align}$$
+
 Here $K$ is a parameter intrinsic to the junction. 
 
 To solve the first equation, we see that
