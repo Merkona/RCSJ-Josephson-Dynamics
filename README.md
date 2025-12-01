@@ -126,7 +126,7 @@ $$
 $$
 ```
 
-Since the time derivative of $n_{A}$ is proportional to current, then if $n_{A}\approx n_{B}$, we get the first Josephson equation, and by combining ```math $\dot{\varphi}=\dot{\phi}_{B}-\dot{\phi}_{A}$``` we get the second Josephson equation.
+Since the time derivative of $n_{A}$ is proportional to current, then if $n_{A}\approx n_{B}$, we get the first Josephson equation, and by combining  $$\dot{\varphi}=\dot{\phi}_{B}-\dot{\phi}_{A}$$ we get the second Josephson equation.
 
 # Basic Usage
 The folder titled `RCSJ Basis` outlines the classes and methods we use that form the basis for exploring JJs. The foundational python file of this project is `RCSJ_Core.py`, which contains the classes `RCSJParams`, `RCSJModel`, and `RCSJSolve`. These classes work sequentially to set up, model, and solve the relevant ODEs respectively.
