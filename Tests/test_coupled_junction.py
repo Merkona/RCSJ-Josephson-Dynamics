@@ -1,12 +1,12 @@
 import unittest
 import numpy as np
-from Models.artificial_helium import HeliumRCSJSolve
+from RCSJ_Basis.coupled_junction import CoupledRCSJSolve
 
 
-class TestHeliumRCSJSolve(unittest.TestCase):
+class TestCoupledRCSJSolve(unittest.TestCase):
 
     def setUp(self):
-        self.model = HeliumRCSJSolve(
+        self.model = CoupledRCSJSolve(
             kappa=0.2,
             Ic=1e-6,
             C=1e-12,
@@ -45,7 +45,7 @@ class TestHeliumRCSJSolve(unittest.TestCase):
         y = [1.0, 0.0, 0.0, 0.0]
 
         # Small kappa
-        model_small = HeliumRCSJSolve(
+        model_small = CoupledRCSJSolve(
             kappa=0.01, Ic=1e-6, C=1e-12, R=1e3
         )
         dy_small = model_small.ode(0.0, y)
@@ -53,7 +53,7 @@ class TestHeliumRCSJSolve(unittest.TestCase):
         phi2_ddot_small = dy_small[3]
 
         # Large kappa
-        model_large = HeliumRCSJSolve(
+        model_large = CoupledRCSJSolve(
             kappa=1.0, Ic=1e-6, C=1e-12, R=1e3
         )
         dy_large = model_large.ode(0.0, y)
@@ -63,11 +63,11 @@ class TestHeliumRCSJSolve(unittest.TestCase):
         self.assertGreater(phi1_ddot_small, phi1_ddot_large)
         self.assertLess(phi2_ddot_small, phi2_ddot_large)
 
-    def test_helium_potential(self):
+    def test_potential(self):
         phi1 = 1.0
         phi2 = -0.5
 
-        U = self.model.helium_potential(phi1, phi2)
+        U = self.model.potential(phi1, phi2)
 
         # Compute expected
         U1 = 1 - np.cos(phi1) - self.model.i_dc * phi1
@@ -77,11 +77,11 @@ class TestHeliumRCSJSolve(unittest.TestCase):
 
         self.assertAlmostEqual(U, expected)
 
-    def test_helium_energy(self):
-        E = self.model.helium_energy(1.0, 0.3, -0.5, -0.1)
+    def test_energy(self):
+        E = self.model.energy(1.0, 0.3, -0.5, -0.1)
 
         T = 0.5 * (0.3**2 + (-0.1)**2)
-        U = self.model.helium_potential(1.0, -0.5)
+        U = self.model.potential(1.0, -0.5)
         expected = T + U
 
         self.assertAlmostEqual(E, expected)
