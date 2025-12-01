@@ -3,7 +3,7 @@
     parameters as RCSJSolve, plus a coupling kappa between the phases.
 """
 import numpy as np
-from RCSJ_methods import RCSJSolve   # import the solver
+from RCSJ_Core import RCSJSolve   # import the solver
 
 class HeliumRCSJSolve(RCSJSolve):
 

@@ -1,7 +1,7 @@
 
 import unittest
 import numpy as np
-from RCSJ_methods import RCSJModel, RCSJParams, RCSJSolve
+from RCSJ_Core import RCSJModel, RCSJParams, RCSJSolve
 
 class TestRCSJParams(unittest.TestCase):
     """Test the RCSJParams Class"""
