@@ -24,12 +24,14 @@ A Josephson Junction is comprised of two superconducting materials with a thin i
 
 The behavior of these phenomenon is captured in the **Josephson Equations**:
 $$
+```math
+$$
 \begin{align}
 &I(t)=I_{c}\sin(\mathcal{\varphi}(t)) \\
 &\frac{ \partial \varphi }{ \partial t } = \frac{2eV(t)}{\hbar}
 \end{align}
 $$
-
+```
 Where
 - $I(t)$ is the current across the junction
 - $V(t)$ is the voltage across the junction
