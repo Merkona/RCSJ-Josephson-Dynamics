@@ -265,8 +265,8 @@ def animate_phase_space(sol, which="phi1", interval=12):
 
     fig, ax = plt.subplots(figsize=(6, 4))
     ax.plot(phi, phi_dot, color="0.9", lw=0.8)
-    point, = ax.plot([], [], "o", color="C1")
-    trail, = ax.plot([], [], color="C0", lw=2.0)
+    (point,) = ax.plot([], [], "o", color="C1")
+    (trail,) = ax.plot([], [], color="C0", lw=2.0)
 
     ax.set_xlabel(rf"Phase ${label}$")
     ax.set_ylabel(rf"Phase velocity $\dot{{{label}}}$")
@@ -278,7 +278,7 @@ def animate_phase_space(sol, which="phi1", interval=12):
         return point, trail
 
     def update(i):
-        point.set_data(phi[i], phi_dot[i])
+        point.set_data([phi[i]], [phi_dot[i]])
         trail.set_data(phi[: i + 1], phi_dot[: i + 1])
         return point, trail
 
@@ -318,8 +318,8 @@ def animate_heatmap_trajectory(model, sol, n_grid=200, interval=12):
     cb = plt.colorbar(hm, ax=ax)
     cb.set_label(r"Potential $U(\phi_1,\phi_2)$")
 
-    line, = ax.plot([], [], color="C3", lw=2.0, label="Trajectory")
-    point, = ax.plot([], [], "o", color="w", markersize=6)
+    (line,) = ax.plot([], [], color="C3", lw=2.0, label="Trajectory")
+    (point,) = ax.plot([], [], "o", color="w", markersize=6)
     ax.set_xlabel(r"$\phi_1$")
     ax.set_ylabel(r"$\phi_2$")
     ax.set_title("Potential Landscape (animated trajectory)")
@@ -332,7 +332,7 @@ def animate_heatmap_trajectory(model, sol, n_grid=200, interval=12):
 
     def update(i):
         line.set_data(phi1_traj[: i + 1], phi2_traj[: i + 1])
-        point.set_data(phi1_traj[i], phi2_traj[i])
+        point.set_data([phi1_traj[i]], [phi2_traj[i]])
         return line, point
 
     anim = animation.FuncAnimation(
@@ -395,7 +395,9 @@ if __name__ == "__main__":
     # Animated phase-space trajectories
     anim_phi1, fig_phi1, ax_phi1 = animate_phase_space(sol, which="phi1", interval=10)
     anim_phi2, fig_phi2, ax_phi2 = animate_phase_space(sol, which="phi2", interval=10)
-    anim_delta, fig_delta, ax_delta = animate_phase_space(sol, which="delta", interval=10)
+    anim_delta, fig_delta, ax_delta = animate_phase_space(
+        sol, which="delta", interval=10
+    )
 
     # Animated heatmap trajectory
     anim_heatmap, fig_anim, ax_anim = animate_heatmap_trajectory(model, sol)

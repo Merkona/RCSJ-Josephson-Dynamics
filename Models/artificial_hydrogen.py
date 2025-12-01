@@ -188,8 +188,8 @@ def animate_phase_space(model, sol, interval=20):
 
     # Plot full path lightly for context
     ax.plot(phi, phi_dot, color="0.9", lw=0.8)
-    point, = ax.plot([], [], "o", color="C1")
-    trail_line, = ax.plot([], [], color="C0", lw=2.0)
+    (point,) = ax.plot([], [], "o", color="C1")
+    (trail_line,) = ax.plot([], [], color="C0", lw=2.0)
 
     def init():
         point.set_data([], [])
@@ -197,7 +197,7 @@ def animate_phase_space(model, sol, interval=20):
         return point, trail_line
 
     def update(i):
-        point.set_data(phi[i], phi_dot[i])
+        point.set_data([phi[i]], [phi_dot[i]])
         trail_line.set_data(phi[: i + 1], phi_dot[: i + 1])
         return point, trail_line
 
@@ -237,7 +237,7 @@ def animate_bead_on_potential(model, sol, interval=15):
 
     fig, ax = plt.subplots(figsize=(7, 4))
     ax.plot(grid, U_grid, color="0.4", lw=1.5, label="Potential")
-    bead, = ax.plot([], [], "o", color="C3", markersize=8, label="Bead")
+    (bead,) = ax.plot([], [], "o", color="C3", markersize=8, label="Bead")
     ax.set_xlabel(r"Phase $\phi$")
     ax.set_ylabel(r"Potential $U(\phi)$")
     ax.set_title("Bead on Tilted Washboard")
@@ -250,7 +250,7 @@ def animate_bead_on_potential(model, sol, interval=15):
     def update(i):
         phi = phi_traj[i]
         U = model.potential(phi)
-        bead.set_data(phi, U)
+        bead.set_data([phi], [U])
         return (bead,)
 
     anim = animation.FuncAnimation(
