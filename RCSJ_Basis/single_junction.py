@@ -10,7 +10,7 @@ This module provides:
 """
 
 import numpy as np
-from RCSJ_Core import RCSJSolve
+from .RCSJ_Core import RCSJSolve
 
 
 class SingleRCSJSolve(RCSJSolve):

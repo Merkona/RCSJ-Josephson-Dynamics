@@ -7,7 +7,7 @@ models such as the helium toy model in artificial_helium.py.
 """
 
 import numpy as np
-from RCSJ_Core import RCSJSolve
+from .RCSJ_Core import RCSJSolve
 
 
 class CoupledRCSJSolve(RCSJSolve):
