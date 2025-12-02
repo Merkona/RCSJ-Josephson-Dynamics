@@ -16,8 +16,8 @@ import sys
 
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import animation
-from matplotlib.collections import LineCollection
+from matplotlib.animation import FuncAnimation, PillowWriter
+
 
 # Ensure repository root is on sys.path for direct script execution
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -27,276 +27,170 @@ if str(REPO_ROOT) not in sys.path:
 from RCSJ_Basis.single_junction import SingleRCSJSolve
 
 
-# --------------------------------------------------------------------------- #
-# Simulation helper
-# --------------------------------------------------------------------------- #
-def run_sim(
-    params,
-    y0,
-    tau_span,
-    num_points=2000,
-    **solve_kwargs,
-):
-    """
-    Run a single-junction RCSJ simulation.
+# ------------------------------------------------------------
+# 1. SETUP: create a single junction and solve its dynamics
+# ------------------------------------------------------------
 
-    Parameters
-    ----------
-    params : dict
-        Keyword arguments passed to SingleRCSJSolve (e.g., Ic, C, R, I_dc, I_ac,
-        omega_drive, phi_drive).
-    y0 : sequence
-        Initial conditions [phi0, phi_dot0].
-    tau_span : tuple(float, float)
-        Dimensionless time window (tau_start, tau_end).
-    num_points : int, optional
-        Number of evaluation points for t_eval (uniform grid).
-    **solve_kwargs :
-        Additional arguments forwarded to solve() (rtol, atol, max_step, etc.).
+jj = SingleRCSJSolve(
+    Ic=1e-6,
+    C=1e-12,
+    R=5e3,
+    I_dc=0.3e-6,   # small tilt to keep the first well intact
+    I_ac=0.0,
+    omega_drive=0.0,
+    phi_drive=0.0,
+)
 
-    Returns
-    -------
-    model : SingleRCSJSolve
-    sol : OdeResult from scipy.integrate.solve_ivp
-    """
-    model = SingleRCSJSolve(**params)
-    t_eval = np.linspace(*tau_span, num_points)
-    sol = model.solve(y0=y0, tau_span=tau_span, t_eval=t_eval, **solve_kwargs)
-    return model, sol
+y0 = [0.0, 0.0]
+tau_span = (0, 40)
+t_eval = np.linspace(*tau_span, 2000)
 
+sol = jj.solve(y0=y0, tau_span=tau_span, t_eval=t_eval)
 
-# --------------------------------------------------------------------------- #
-# Plotting helpers
-# --------------------------------------------------------------------------- #
-def plot_phase_time(ax, sol):
-    """Phase vs dimensionless time."""
-    ax.plot(sol.t, sol.y[0], lw=1.5)
-    ax.set_xlabel(r"Dimensionless time $\tau$")
-    ax.set_ylabel(r"Phase $\phi$")
-    ax.set_title("Phase vs Time")
-    return ax
+phi = sol.y[0]
+t = sol.t
 
+# ------------------------------------------------------------
+# 2. SIMPLE φ vs t PLOT
+# ------------------------------------------------------------
 
-def plot_energy_split(ax, model, sol):
-    """
-    Plot kinetic, potential, and total energy vs time.
-    """
-    phi = sol.y[0]
-    phi_dot = sol.y[1]
+plt.figure(figsize=(7,4))
+plt.plot(t, phi, lw=1.5)
+plt.xlabel("Dimensionless Time τ")
+plt.ylabel("Phase φ")
+plt.title("Phase vs Time")
+plt.grid(True)
+plt.tight_layout()
+plt.show()
 
-    kinetic = 0.5 * phi_dot**2
-    potential = model.potential(phi)
-    total = kinetic + potential
+# ------------------------------------------------------------
+# 3. ANIMATION: bead oscillating in the tilted washboard
+# ------------------------------------------------------------
 
-    ax.plot(sol.t, kinetic, label="Kinetic", lw=1.2)
-    ax.plot(sol.t, potential, label="Potential", lw=1.2)
-    ax.plot(sol.t, total, label="Total", lw=1.8)
-    ax.set_xlabel(r"Dimensionless time $\tau$")
-    ax.set_ylabel("Energy (dimensionless)")
-    ax.set_title("Energy Partition vs Time")
-    ax.legend()
-    return ax
+# Range that shows the first full well AND the next empty well
+phi_min = -2.0
+phi_max = 9.0
+phi_grid = np.linspace(phi_min, phi_max, 800)
+U_grid = jj.potential(phi_grid)
 
+# Create the figure
+fig, ax = plt.subplots(figsize=(7,4))
+ax.set_xlim(phi_min, phi_max)
+ax.set_ylim(min(U_grid)-0.5, max(U_grid)+0.5)
 
-def plot_phase_space(ax, sol):
-    """Phase-space trajectory: phi_dot vs phi with direction cues."""
-    phi = sol.y[0]
-    phi_dot = sol.y[1]
+ax.set_xlabel("Phase φ")
+ax.set_ylabel("Potential U(φ)")
+ax.set_title("Bead Oscillating in the Tilted Washboard")
 
-    ax.plot(phi, phi_dot, lw=1.0, color="C1")
+# Plot potential
+ax.plot(phi_grid, U_grid, color="black", lw=2)
 
-    # Sparse, short arrows along the path to show direction without clutter
-    n = len(phi)
-    step = max(1, n // 30)
-    idx = np.arange(0, n - 1, step)
-    dphi = phi[idx + 1] - phi[idx]
-    dphi_dot = phi_dot[idx + 1] - phi_dot[idx]
-    norm = np.hypot(dphi, dphi_dot)
-    norm[norm == 0] = 1.0
-    ax.quiver(
-        phi[idx],
-        phi_dot[idx],
-        dphi / norm,
-        dphi_dot / norm,
-        angles="xy",
-        scale_units="xy",
-        scale=12,
-        width=0.003,
-        color="C0",
-        alpha=0.8,
-    )
+# Bead (the particle)
+bead, = ax.plot([], [], "ro", ms=10)
 
-    ax.set_xlabel(r"Phase $\phi$")
-    ax.set_ylabel(r"Phase velocity $\dot{\phi}$")
-    ax.set_title("Phase Space")
-    return ax
+# Animation update function
+def update(frame):
+    bead.set_data([phi[frame]], [jj.potential(phi[frame])])
+    return bead,
+
+# Create animation
+anim = FuncAnimation(
+    fig,
+    update,
+    frames=600,
+    interval=1,
+    blit=True
+)
+
+plt.show()
+anim.save("washboard_potential.gif", writer=PillowWriter(fps=30))
 
 
-def plot_potential_overlay(ax, model, sol, n_grid=400):
-    """
-    Plot tilted washboard potential with a time-coded trajectory overlay.
-    """
-    phi_traj = sol.y[0]
-    phi_min = phi_traj.min()
-    phi_max = phi_traj.max()
-    margin = 0.5 * (phi_max - phi_min + 1e-6)
-    grid = np.linspace(phi_min - margin, phi_max + margin, n_grid)
-    potential_curve = model.potential(grid)
-    ax.plot(grid, potential_curve, color="0.4", lw=1.5, label="Potential")
+# ------------------------------------------------------------
+# 1. EFFECTIVE HYDROGEN RADIAL POTENTIAL (with angular momentum)
+# ------------------------------------------------------------
 
-    # Time-coded trajectory using a LineCollection
-    phi = phi_traj
-    U = model.potential(phi)
-    points = np.array([phi, U]).T.reshape(-1, 1, 2)
-    segments = np.concatenate([points[:-1], points[1:]], axis=1)
-    lc = LineCollection(segments, cmap="plasma", linewidth=2.0)
-    lc.set_array(sol.t[:-1])
-    ax.add_collection(lc)
-    cb = plt.colorbar(lc, ax=ax)
-    cb.set_label(r"Time $\tau$")
+L = 1.0  # angular momentum (in suitable units)
 
-    ax.set_xlabel(r"Phase $\phi$")
-    ax.set_ylabel(r"Potential $U(\phi)$")
-    ax.set_title("Potential Landscape with Trajectory")
-    ax.legend(loc="upper left")
-    return ax
+def V_eff(r):
+    return -1.0 / r + 0.5 * L**2 / r**2
 
+# ------------------------------------------------------------
+# 2. CLASSICAL MOTION IN V_eff(r)  (symplectic integrator)
+# ------------------------------------------------------------
 
-def animate_phase_space(model, sol, interval=20):
-    """
-    Build a matplotlib FuncAnimation showing the phase-space trajectory.
+def accel(r):
+    # r'' = -dV_eff/dr = -1/r**2 + L**2 / r**3
+    return -1.0 / (r**2) + L**2 / (r**3)
 
-    Parameters
-    ----------
-    model : SingleRCSJSolve (unused, kept for future extensions)
-    sol : OdeResult
-    interval : int
-        Delay between frames in ms.
+def integrate(r0, rdot0, t_max=40, dt=0.01):
+    t = np.arange(0, t_max, dt)
+    r = np.zeros_like(t)
+    rd = np.zeros_like(t)
+    r[0], rd[0] = r0, rdot0
 
-    Returns
-    -------
-    anim : matplotlib.animation.FuncAnimation
-    fig, ax : Figure and Axes used.
-    """
-    fig, ax = plt.subplots(figsize=(6, 4))
-    phi = sol.y[0]
-    phi_dot = sol.y[1]
+    for i in range(len(t) - 1):
+        # velocity Verlet / leapfrog (symplectic)
+        a_n = accel(r[i])
+        rd_half = rd[i] + 0.5 * a_n * dt
+        r[i+1] = r[i] + rd_half * dt
 
-    ax.set_xlabel(r"Phase $\phi$")
-    ax.set_ylabel(r"Phase velocity $\dot{\phi}$")
-    ax.set_title("Phase Space (animated)")
+        # avoid singularity
+        if r[i+1] < 1e-3:
+            r[i+1] = 1e-3
 
-    # Plot full path lightly for context
-    ax.plot(phi, phi_dot, color="0.9", lw=0.8)
-    (point,) = ax.plot([], [], "o", color="C1")
-    (trail_line,) = ax.plot([], [], color="C0", lw=2.0)
+        a_np1 = accel(r[i+1])
+        rd[i+1] = rd_half + 0.5 * a_np1 * dt
 
-    def init():
-        point.set_data([], [])
-        trail_line.set_data([], [])
-        return point, trail_line
+    return t, r
 
-    def update(i):
-        point.set_data([phi[i]], [phi_dot[i]])
-        trail_line.set_data(phi[: i + 1], phi_dot[: i + 1])
-        return point, trail_line
+# Choose ICs near the minimum of V_eff for bound motion
+t, r = integrate(r0=1.5, rdot0=0.0, t_max=40, dt=0.01)
 
-    anim = animation.FuncAnimation(
-        fig,
-        update,
-        init_func=init,
-        frames=len(phi),
-        interval=interval,
-        blit=True,
-    )
-    return anim, fig, ax
+# ------------------------------------------------------------
+# 3. SIMPLE r vs t PLOT
+# ------------------------------------------------------------
 
+plt.figure(figsize=(7, 4))
+plt.plot(t, r)
+plt.xlabel("Time")
+plt.ylabel("Radius r")
+plt.title("Electron Radius vs Time in V_eff(r)")
+plt.grid(True)
+plt.tight_layout()
+plt.show()
 
-def animate_bead_on_potential(model, sol, interval=15):
-    """
-    Animate a bead sliding on the tilted washboard U(phi) following phi(t).
+# ------------------------------------------------------------
+# 4. ANIMATION OF THE ELECTRON IN V_eff(r)
+# ------------------------------------------------------------
 
-    Parameters
-    ----------
-    model : SingleRCSJSolve
-    sol : OdeResult
-    interval : int
-        Delay between frames in ms.
+r_min = 0.1
+r_max = 10.0
+r_grid = np.linspace(r_min, r_max, 500)
+V_grid = V_eff(r_grid)
 
-    Returns
-    -------
-    anim : matplotlib.animation.FuncAnimation
-    fig, ax : Figure and Axes used.
-    """
-    phi_traj = sol.y[0]
-    phi_min = phi_traj.min()
-    phi_max = phi_traj.max()
-    margin = 0.5 * (phi_max - phi_min + 1e-6)
-    grid = np.linspace(phi_min - margin, phi_max + margin, 400)
-    U_grid = model.potential(grid)
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.plot(r_grid, V_grid, lw=2, color="black")
+ax.set_xlim(r_min, r_max)
+ax.set_ylim(-1, 4.0)
+ax.set_xlabel("Radius r")
+ax.set_ylabel("Effective Potential V_eff(r)")
+ax.set_title("Electron Bead in Hydrogen Effective Potential")
 
-    fig, ax = plt.subplots(figsize=(7, 4))
-    ax.plot(grid, U_grid, color="0.4", lw=1.5, label="Potential")
-    (bead,) = ax.plot([], [], "o", color="C3", markersize=8, label="Bead")
-    ax.set_xlabel(r"Phase $\phi$")
-    ax.set_ylabel(r"Potential $U(\phi)$")
-    ax.set_title("Bead on Tilted Washboard")
-    ax.legend(loc="upper left")
+bead, = ax.plot([], [], "ro", ms=10)
 
-    def init():
-        bead.set_data([], [])
-        return (bead,)
+def update(frame):
+    r_val = r[frame]
+    bead.set_data([r_val], [V_eff(r_val)])
+    return bead,
 
-    def update(i):
-        phi = phi_traj[i]
-        U = model.potential(phi)
-        bead.set_data([phi], [U])
-        return (bead,)
+anim = FuncAnimation(
+    fig,
+    update,
+    frames=1200,
+    interval=0.5,
+    blit=True
+)
 
-    anim = animation.FuncAnimation(
-        fig,
-        update,
-        init_func=init,
-        frames=len(phi_traj),
-        interval=interval,
-        blit=True,
-    )
-    return anim, fig, ax
-
-
-# --------------------------------------------------------------------------- #
-# Example usage
-# --------------------------------------------------------------------------- #
-if __name__ == "__main__":
-    # Example parameters for a driven single junction
-    params = dict(
-        Ic=1e-6,
-        C=1e-12,
-        R=1e3,
-        I_dc=0.5e-6,
-        I_ac=0.2e-6,
-        omega_drive=2e9,
-        phi_drive=0.0,
-    )
-    y0 = [0.0, 0.0]
-    tau_span = (0.0, 50.0)
-
-    model, sol = run_sim(params, y0, tau_span, num_points=2000)
-    if not sol.success:
-        raise RuntimeError(f"Solver failed: {sol.message}")
-
-    fig, axes = plt.subplots(2, 2, figsize=(12, 8))
-    plot_phase_time(axes[0, 0], sol)
-    plot_energy_split(axes[0, 1], model, sol)
-    plot_phase_space(axes[1, 0], sol)
-    plot_potential_overlay(axes[1, 1], model, sol)
-    fig.tight_layout()
-    plt.show()
-
-    # Optional: build and display an animated phase-space trajectory
-    anim, fig_anim, ax_anim = animate_phase_space(model, sol)
-    plt.show()
-
-    # Optional: bead-on-track animation of the potential landscape
-    anim_bead, fig_bead, ax_bead = animate_bead_on_potential(model, sol)
-    plt.show()
+plt.show()
+anim.save("H_potential.gif", writer=PillowWriter(fps=30))
