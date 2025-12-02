@@ -143,24 +143,28 @@ This equation describes a **driven, damped, nonlinear oscillator**, and is the f
 
 ### **Non-dimensionalizing the equation**
 
-We can simplify this further by defining the normalized currents.
+Often the normalized version of the RCSJ equation will be used. This is obtained by using the plasma frequency defined as $\omega_{p}^{2}=\frac{2eI_{c}}{\hbar C}$ to obtain
 
 ```math
-\overline{I}_c = \frac{2e I_c}{\hbar}, \qquad
-\overline{I}   = \frac{2e I}{\hbar}
+$$
+\begin{align}
+\ddot{\varphi}+\frac{1}{RC}\dot{\varphi}+\omega_{p}^{2}\sin(\varphi)=\frac{2eI}{\hbar C}
+\end{align}
+$$
 ```
 
-Dividing the RCSJ equation by $\overline{I_{c}}$ gives:
+Then, we switch differentiation from $t$ to $\tau=\omega_{p}t$, which is known as dimensionless time, with $\frac{d}{dt}=\omega_{p} \frac{d}{d\tau}$. Making this replacement and then simplifying again yields the normalized RCSJ equation:
 
 ```math
-\boxed{\frac{C}{\overline{I}_c} \frac{d^2\varphi}{dt^2}
-+ \frac{1}{R \overline{I}_c} \frac{d\varphi}{dt}
-+ \sin(\varphi)
-=
-\frac{\overline{I}}{\overline{I}_c}}
+$$
+\begin{align}
+\frac{d^{2}{\varphi}}{d\tau^{2}}+\alpha  \frac{d{\varphi}}{d\tau}+\sin(\varphi)=i
+\end{align}
+$$
 ```
 
-In later sections, we take $I_{c}=\overline{I}_{c}\text{, }I=\overline{I}$. to simplify expressions.
+Where $\alpha = \frac{1}{RC\omega_{p}}$, and $i = \frac{I}{I_{c}}$. 
+
 
 ## 5. Washboard Potential:
 The differential equation we obtained in the RCSJ model is of the form
@@ -173,12 +177,12 @@ m \ddot{x}+\gamma  \dot{x}+ \frac{dU}{dx}=0
 $$
 ```
 
-In this analogy, $\frac{dU}{d\varphi}={I}_{c}\sin(\varphi)-I$. Integrating this gives
+In this analogy, $\frac{dU}{d\varphi}={i}_{c}\sin(\varphi)-i$. Integrating this gives
 
 ```math
 $$
 \begin{align}
-\boxed{U(\varphi)=-I_{c}\cos(\varphi)-I\varphi}
+\boxed{U(\varphi)=-i_{c}\cos(\varphi)-i\varphi}
 \end{align}
 $$
 ```
@@ -192,7 +196,20 @@ For the first case, the potential has local minima corresponding to zero voltage
 
 
 ## 6. Shapiro Steps:
-(To do if we decide to investigate this)
+Instead of having only a DC driving current $i_{dc}$ (which is $i$ in previous context), we can also drive the junction with an AC current, $i_{ac}$. Including this term gives us the following RCSJ equation:
+
+```math
+$$
+\begin{align}
+\frac{d^{2}{\varphi}}{d\tau^{2}}+\alpha  \frac{d{\varphi}}{d\tau}+\sin(\varphi)=i_{DC}+i_{AC}\sin(\Omega \tau)
+\end{align}
+$$
+```
+
+Where $\Omega=\frac{\omega_{drive}}{\omega_{p}}$ and $\omega_{drive}$ is the frequency of the AC current.
+
+For reasons outside of the scope of this section, the frequency of the Josephson Junction caused by the voltage $V$ becomes locked to integer multiples of the driving frequency $\Omega$. This leads to a quantization of the I-V curve known as Shapiro Steps.
+
 
 # Basic Usage
 The folder titled `RCSJ Basis` outlines the classes and methods we use that form the basis for exploring JJs. The foundational python file of this project is `RCSJ_Core.py`, which contains the classes `RCSJParams`, `RCSJModel`, and `RCSJSolve`. These classes work sequentially to set up, model, and solve the relevant ODEs respectively.
