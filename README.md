@@ -221,3 +221,14 @@ Also in `RCSJ Basis` are the files `single_junction.py` and `coupled_junction.py
 Beyond the core RCSJ models, the repository contains higher-level files that connect these junction dynamics to artificial atomic analogues. The files `artificial_hydrogen.py` and `artificial_helium.py` build directly on the `single_junction` and `coupled_junction` classes to construct simplified hydrogen-like and helium-like systems respectively. These scripts not only initialize and solve the corresponding RCSJ models, but also include routines to visualize the time evolution of the phase variables, plot the effective potential landscapes, and compare these classical junction-based potentials to their real atomic counterparts.
 
 In this organization, the physics and numerics of the RCSJ model remain isolated within `RCSJ_Core.py`, the concrete physical systems (single and coupled junctions) are defined in their own dedicated modules, and the artificial atom files act as application-level examples that tie everything together. This structure keeps the codebase clear, extensible, and easy to navigate for anyone wishing to explore Josephson junction dynamics or build upon the artificial-atom analogies developed in this project.
+
+# Results
+
+
+# Resources
+- https://www.wmi.badw.de/fileadmin/WMI/Lecturenotes/Applied_Superconductivity/AS_Chapter1.pdf - Chapters 1-3 cover theory of JJ and the LCSJ circuit model.
+- [https://www.nobelprize.org/uploads/2025/10/advanced-physicsprize2025.pdf](https://www.nobelprize.org/uploads/2025/10/advanced-physicsprize2025.pdf "https://www.nobelprize.org/uploads/2025/10/advanced-physicsprize2025.pdf") - Information on application of Josephson junctions and related Nobel prize.
+- 
+
+
+
