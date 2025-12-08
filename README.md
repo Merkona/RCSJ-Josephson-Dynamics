@@ -245,25 +245,40 @@ Tests/
 
 
 # Results
-There are many types of plots available in `artifical_helium.py` and `artifical_hydrogen.py`. Here we showcase a section of them to demonstrate features of the code and Josephson junction dynamics.
+There are many types of plots available in `artifical_helium.py` and `artifical_hydrogen.py`. Here we showcase a section of them to demonstrate features of the code and Josephson junction dynamics, as well as analogues to hydrogen and helium models.
 
 ## Tilted Washboard
-<img width="700" height="400" alt="tilted_washboard" src="https://github.com/user-attachments/assets/a1b1f32f-6a41-4ceb-8cf9-ea49d4a2cd7f" />
+While the tilted washboard potential is simply defined in the code and doesn't need to be computed, it serves as a useful visualization for understanding how the state of the josephson junction transitions from a zero voltage to finite voltage state.
+
+Within the critical currect limit, the state finds a local minima, and so there is zero voltage since there is no change in phase. Changing the current tilts the potential, and at a certain threshold the state begins to move down the potential. Therefore, there is a constant change in phase providing a finite voltage.
+
+![washboard_potential](https://github.com/user-attachments/assets/b3a77498-eb1e-4168-a9d0-4a054c34b868)
 
 
 ## I-V Curve
+The I-V curve demonstates the transition as described by the washboard potential.
+
 <img width="591" height="472" alt="Screenshot_774" src="https://github.com/user-attachments/assets/e2e44b9f-7590-4ebf-950f-cca67c4c8684" />
 
-## Phase vs `e^{-}` radius
+## Phase vs electron radius
+The dynamics of the Josephson junction can be used to roughly model electrons in an atom/molecule. We see here that the phase of the jospehson junction and the radius of the electron around a hydrogen nucleus have similar form.
+
 <img width="871" height="496" alt="Screenshot_775" src="https://github.com/user-attachments/assets/20cc4708-d444-4a11-93b9-9c420beab38f" />
 
 <img width="870" height="500" alt="Screenshot_776" src="https://github.com/user-attachments/assets/18ec4a6c-11b2-41cf-b495-010b6fc10093" />
 
+
 ## Washboard potential vs Hydrogen potential
-(gif of washboard) (gif of hydrogen potential)
+Furthering the analogy, the washboard potential is roughly equivalent to the hydrogen potential in the local region where the state/electron resides in the potentiel.
+
+![washboard_potential](https://github.com/user-attachments/assets/e843dd02-ff7d-492e-ba4b-43266142a337)
+
+![H_potential](https://github.com/user-attachments/assets/d633adfb-ef3b-474b-bceb-5b97af866fe8)
 
 
 ## Washboard potential vs Helium potential
+If we move up a dimension, we can also see that a helium potential can be approximately modeled by the washboard potential as well, and can thus be modeled by Josephson junctions.
+
 <img width="700" height="500" alt="3D_washboard" src="https://github.com/user-attachments/assets/478a5d4b-1d85-4858-8d35-ec552016f13c" />
 
 <img width="600" height="500" alt="helium_WF_heatmap" src="https://github.com/user-attachments/assets/3f741543-8b9f-42a9-92dd-87f577d89597" />
