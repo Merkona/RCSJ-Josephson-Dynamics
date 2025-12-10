@@ -9,7 +9,7 @@ To enjoy this repository to the fullest, you will need python 3 with the followi
 - `SciPy`
 - Optional: `pillow` for saving GIFs
 
-To install pakages, simply type `pip install [pakage name]` into the terminal
+To install pakages, simply type `pip install [pakage name]` into the terminal.
 While those pakages install, please enjoy a brief Introduction and Theory overview (for those interested) before moving on to the 'Basic Usage' section for further instructions and repository info.
 
 # Introduction
@@ -203,8 +203,6 @@ For the first case, the potential has local minima corresponding to zero voltage
 # Basic Usage
 After installing the pakages listed in the 'Getting Started' section, you are now ready to download the zip containing all code from this repository or any specific folders/files as described below. 
 
-### FOR EXAMPLE USAGE
-
 The folder titled `RCSJ Basis` outlines the classes and methods we use that form the basis for exploring JJs. The foundational python file of this project is `RCSJ_Core.py`, which contains the classes `RCSJParams`, `RCSJModel`, and `RCSJSolve`. These classes work sequentially to set up, model, and solve the relevant ODEs respectively.
 
 Also in `RCSJ Basis` are the files `single_junction.py` and `coupled_junction.py`, which lay the groundwork for modeling hydrogen and helium by defining the classes `RCSJ` and `CoupledRCSJ`. These classes describe and extend the single Josephson junction governed by the standard RCSJ differential equation, with parameters such as $I_c, R, C$ and external bias currents specified upon initialization. The `RCSJ` implementation serves as the simplest example of phase dynamics in an anharmonic potential, while `CoupledRCSJ` generalizes the model to two interacting phases through capacitive coupling, enabling multi-degree-of-freedom behavior analogous to multi-electron systems.
@@ -216,7 +214,7 @@ In this organization, the physics and numerics of the RCSJ model remain isolated
 ### EXAMPLE USAGE
 Within all python files besides `RCSJ_Core`, there will be a section at the bottom that gives a resonable basic use case. Please use these cases (particularly those of the files in the `Models` folder) as a starting point before changing parameters.
 
-### Directory Structure:
+### Directory Structure of python files:
 ```
 Models/
 └── artificial_helium.py
@@ -234,6 +232,8 @@ Tests/
 └── test_coupled_junction.py
 │
 └── test_rcsj.py
+│
+└── test_single.py
 
 ```
 
