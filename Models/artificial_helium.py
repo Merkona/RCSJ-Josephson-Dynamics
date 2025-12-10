@@ -518,10 +518,14 @@ if __name__ == "__main__":
     anim_heatmap, fig_anim, ax_anim = animate_heatmap_trajectory(
         model, sol, max_frames=900
     )
+
+    # Uncomment the ### lines to save animation to file directory.
+
     try:
         # Match on-screen speed (~1/interval) and boost resolution via DPI
-        writer = PillowWriter(fps=int(1000 / 12))  # interval=12 ms -> ~83 fps
-        anim_heatmap.save("helium_heatmap.gif", writer=writer, dpi=300)
+        ### writer = PillowWriter(fps=int(1000 / 12))  # interval=12 ms -> ~83 fps
+        ### anim_heatmap.save("helium_heatmap.gif", writer=writer, dpi=300)
+        pass
     except Exception as e:
         print(f"Failed to save helium_heatmap.gif: {e}")
 
