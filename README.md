@@ -21,8 +21,8 @@ Using a Resistively and Capacitively Shunted Junction (RCSJ) model, we can explo
 
 ## 1. The Josephson Junction
 
-A Josephson Junction is formed by two superconductors separated by a thin insulating barrier.  
-When both materials are in the superconducting state, Cooper pairs are able to tunnel through the barrier, producing a supercurrent even when no voltage is applied.  
+A Josephson Junction is formed by two superconductors separated by a thin insulating barrier.
+When both materials are in the superconducting state, Cooper pairs are able to tunnel through the barrier, producing a supercurrent even when no voltage is applied.
 When a voltage is applied, this supercurrent oscillates at a well-defined frequency.
 
 The behavior of the junction is captured by the **Josephson Equations**:
@@ -37,9 +37,9 @@ $$
 ```
 
 **Where:**
-- $I(t)$: current across the junction  
-- $V(t)$: voltage across the junction  
-- $I_c$: critical current  
+- $I(t)$: current across the junction
+- $V(t)$: voltage across the junction
+- $I_c$: critical current
 - $\varphi = \phi_B - \phi_A$: phase difference between the superconductors
 
 ## 2. Order Parameters and the Origin of the Josephson Phase
@@ -53,10 +53,10 @@ $$
 ```
 
 **Here:**
-- $n_A$ and $n_B$: Cooper-pair densities  
-- $\phi_A$ and $\phi_B$: phases of the superconductors  
+- $n_A$ and $n_B$: Cooper-pair densities
+- $\phi_A$ and $\phi_B$: phases of the superconductors
 
-When a voltage $V$ is applied across the junction, a Cooper pair (charge $2e$) experiences an energy shift of $2eV$.  
+When a voltage $V$ is applied across the junction, a Cooper pair (charge $2e$) experiences an energy shift of $2eV$.
 In electromagnetism, physical observables must remain unchanged when we shift the scalar potential Φ or vector potential 𝐴.
 For a charged condensate, this means that if the potentials change, the superconducting phases must shift too, in such a way that measurable quantities remain the same.
 
@@ -72,7 +72,7 @@ This is the **AC Josephson relation**, showing how voltage directly controls the
 
 ## 3. Tunneling and the Supercurrent
 
-Weak tunneling between the superconductors couples the two order parameters.  
+Weak tunneling between the superconductors couples the two order parameters.
 In the ideal model, the tunneling current is proportional to the sine of the phase difference:
 
 ```math
@@ -163,7 +163,7 @@ $$
 $$
 ```
 
-Where $\alpha = \frac{1}{RC\omega_{p}}$, and $i = \frac{I}{I_{c}}$. 
+Where $\alpha = \frac{1}{RC\omega_{p}}$, and $i = \frac{I}{I_{c}}$.
 
 
 ## 5. Washboard Potential:
@@ -284,10 +284,24 @@ If we move up a dimension, we can also see that a helium potential can be approx
 <img width="600" height="500" alt="helium_WF_heatmap" src="https://github.com/user-attachments/assets/3f741543-8b9f-42a9-92dd-87f577d89597" />
 
 
-# Resources
-- https://www.wmi.badw.de/fileadmin/WMI/Lecturenotes/Applied_Superconductivity/AS_Chapter1.pdf - Chapters 1-3 cover theory of JJ and the LCSJ circuit model.
-- [https://www.nobelprize.org/uploads/2025/10/advanced-physicsprize2025.pdf](https://www.nobelprize.org/uploads/2025/10/advanced-physicsprize2025.pdf "https://www.nobelprize.org/uploads/2025/10/advanced-physicsprize2025.pdf") - Information on application of Josephson junctions and related Nobel prize.
-- 
+# References & Resources
 
+1. R. W. Simon, M. J. Burns, M. S. Colclough, G. Zaharchuk, and R. Cantor, *Mr. SQUID® User Guide and Advanced Experiments Manual*, STAR Cryoelectronics.
 
+2. J. Q. You and F. Nori, “Atomic physics and quantum optics using superconducting circuits,” *Nature* **474**, 589–597 (2011).
+   https://doi.org/10.1038/nature10122
 
+3. T. P. Orlando and K. A. Delin, *Foundations of Applied Superconductivity*, Addison-Wesley, Reading, MA (1991).
+
+4. M. Tinkham, *Introduction to Superconductivity*, 2nd ed., McGraw-Hill, New York (1996).
+
+5. P. G. de Gennes, *Superconductivity of Metals and Alloys*, Addison-Wesley, Reading, MA (1966, reissued 1989).
+
+6. A. C. Rose-Innes and E. H. Rhoderick, *Introduction to Superconductivity*, International Series in Solid State Physics, Vol. 6, Pergamon Press, Oxford (1978).
+
+7. T. Van Duzer and C. W. Turner, *Principles of Superconductive Devices and Circuits*, Elsevier, New York (1981).
+
+8. R. Gross and A. Marx, *Applied Superconductivity: Josephson Effect and Superconducting Electronics*, Walther-Meißner-Institut, Garching (2005).
+   https://www.wmi.badw.de/
+
+9. The Nobel Committee for Physics, “Scientific Background to the Nobel Prize in Physics 2025: For the discovery of macroscopic quantum mechanical tunneling and energy quantisation in an electric circuit,” The Royal Swedish Academy of Sciences.
