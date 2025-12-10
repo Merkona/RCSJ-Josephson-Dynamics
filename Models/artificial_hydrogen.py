@@ -14,6 +14,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import animation
 from matplotlib.collections import LineCollection
+from matplotlib.animation import PillowWriter
+
 
 # Ensure repository root is on sys.path for direct script execution
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
