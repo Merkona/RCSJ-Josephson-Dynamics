@@ -5,7 +5,7 @@ What this module provides:
 - Thin wrapper around CoupledRCSJSolve to run coupled simulations.
 - Plotting utilities for time traces, phase space, energy partitions, and normal modes.
 - Potential-landscape viewers (2D heatmap, 3D surface, animated trajectories).
-- Convenience sweeps for IV curves and Shapiro steps plus a simple helium probability map.
+- Convenience sweeps for IV curves plus a simple helium probability map.
 """
 
 import pathlib
@@ -14,9 +14,9 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
-from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
 from matplotlib import animation
 from matplotlib.animation import PillowWriter
+
 
 # Ensure repository root is on sys.path for direct script execution
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -317,38 +317,12 @@ def sweep_vi_coupled(params, i_dc_values, y0, tau_span=(0.0, 20.0), num_points=8
     return np.array(voltages)
 
 
-def sweep_shapiro_coupled(
-    params, i_dc_values, y0, tau_span=(0.0, 50.0), num_points=1000
-):
-    """
-    Sweep DC bias with AC drive enabled to reveal Shapiro steps.
-    """
-    voltages = []
-    for i_dc in i_dc_values:
-        p = dict(params)
-        p["I_dc"] = i_dc
-        model, sol = run_sim(p, y0, tau_span, num_points=num_points)
-        if not sol.success:
-            voltages.append(np.nan)
-            continue
-        voltages.append(compute_avg_voltage_coupled(sol))
-    return np.array(voltages)
-
-
 def plot_vi_curve(ax, currents, voltages, Ic):
     ax.plot(currents / Ic, voltages, marker="o", lw=1.2)
     ax.set_xlabel(r"Normalized bias $I/I_c$")
     ax.set_ylabel(r"Normalized voltage $\langle \dot{\phi} \rangle$")
     ax.set_title("IV Curve (coupled junctions)")
     ax.legend()
-    return ax
-
-
-def plot_shapiro(ax, currents, voltages, Ic):
-    ax.plot(currents / Ic, voltages, marker="o", lw=1.2)
-    ax.set_xlabel(r"Normalized bias $I/I_c$")
-    ax.set_ylabel(r"Normalized voltage $\langle \dot{\phi} \rangle$")
-    ax.set_title("Shapiro Steps (with AC drive)")
     return ax
 
 
@@ -469,10 +443,10 @@ def animate_heatmap_trajectory(model, sol, n_grid=200, interval=12, max_frames=N
     return anim, fig, ax
 
 
-#GETTING STARTED - EXAMPLE USAGE
-#READY TO RUN
-#Feel free to change parameters of the below example as needed, we have inputted a reasonable case example
-#Expect plots and animations outputted, no terminal output
+# GETTING STARTED - EXAMPLE USAGE
+# READY TO RUN
+# Feel free to change parameters of the below example as needed, we have inputted a reasonable case example
+# Expect plots and animations outputted, no terminal output
 
 if __name__ == "__main__":
     params = dict(

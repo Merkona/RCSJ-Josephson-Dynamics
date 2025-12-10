@@ -5,7 +5,7 @@ What this module provides:
 - Thin wrapper around SingleRCSJSolve to run single-junction simulations.
 - Plotting utilities for time traces, energy partition, phase space, and potential overlays.
 - Animations for phase space and bead-on-washboard visuals.
-- Convenience sweeps for IV curves and Shapiro steps.
+- Convenience sweeps for IV curves.
 """
 
 import pathlib
@@ -62,7 +62,9 @@ def run_sim(
     model = SingleRCSJSolve(**params)
     if t_eval is None:
         t_eval = np.linspace(tau_start, tau_end, num_points)
-    sol = model.solve(y0=y0, tau_span=(tau_start, tau_end), t_eval=t_eval, **solve_kwargs)
+    sol = model.solve(
+        y0=y0, tau_span=(tau_start, tau_end), t_eval=t_eval, **solve_kwargs
+    )
     return model, sol
 
 
@@ -221,40 +223,17 @@ def plot_vi_curve(ax, currents, voltages, Ic):
     """
     Plot normalized IV curve (avg phi_dot vs I/Ic) for a DC sweep.
     """
-    ax.plot(currents / Ic, voltages, marker="o", lw=1.2, label=r"$\langle \dot{\phi} \rangle$")
+    ax.plot(
+        currents / Ic,
+        voltages,
+        marker="o",
+        lw=1.2,
+        label=r"$\langle \dot{\phi} \rangle$",
+    )
     ax.set_xlabel(r"Normalized bias $I/I_c$")
     ax.set_ylabel(r"Normalized voltage $\langle \dot{\phi} \rangle$")
     ax.set_title("IV Curve (superconducting to running state)")
     ax.legend()
-    return ax
-
-
-def sweep_shapiro(params, i_dc_values, y0, tau_span=(0.0, 50.0), num_points=1000):
-    """
-    Sweep DC bias with AC drive on to show Shapiro steps.
-
-    Returns average normalized voltage for each bias point.
-    """
-    voltages = []
-    for i_dc in i_dc_values:
-        p = dict(params)
-        p["I_dc"] = i_dc
-        model, sol = run_sim(p, y0, tau_span, num_points=num_points)
-        if not sol.success:
-            voltages.append(np.nan)
-            continue
-        voltages.append(compute_avg_voltage(sol))
-    return np.array(voltages)
-
-
-def plot_shapiro(ax, currents, voltages, Ic):
-    """
-    Plot Shapiro-step voltage versus normalized DC bias with AC drive on.
-    """
-    ax.plot(currents / Ic, voltages, lw=1.2)
-    ax.set_xlabel(r"Normalized bias $I/I_c$")
-    ax.set_ylabel(r"Normalized voltage $\langle \dot{\phi} \rangle$")
-    ax.set_title("Shapiro Steps (with AC drive)")
     return ax
 
 
@@ -361,10 +340,10 @@ def animate_bead_on_potential(model, sol, interval=8):
     return anim, fig, ax
 
 
-#GETTING STARTED - EXAMPLE USAGE
-#READY TO RUN
-#Feel free to change parameters of the below example as needed, we have inputted a reasonable case example
-#Expect plots and animations outputted, no terminal output
+# GETTING STARTED - EXAMPLE USAGE
+# READY TO RUN
+# Feel free to change parameters of the below example as needed, we have inputted a reasonable case example
+# Expect plots and animations outputted, no terminal output
 
 if __name__ == "__main__":
     # Example parameters for a driven single junction
