@@ -3,10 +3,14 @@
 
 # Getting Started
 
-We use Python 3 with the following packages:
+To enjoy this repository to the fullest, you will need python 3 with the following pakages installed:
 - `NumPy`
 - `Matplotlib`
 - `SciPy`
+- Optional: `pillow` for saving GIFs
+
+To install pakages, simply type `pip install [pakage name]` into the terminal
+While those pakages install, please enjoy a brief Introduction and Theory overview (for those interested) before moving on to the 'Basic Usage' section for further instructions and repository info.
 
 # Introduction
 Superconducting circuits have become one of the most powerful platforms for realizing controllable quantum systems. In particular, circuits that utilize the superconducting Josephson Junction (JJ) to provide a non-linear inductive element have formed the backbone of modern quantum technologies, including qubits, superconducting resonators, and macroscopic quantum devices.
@@ -196,24 +200,11 @@ The washboard potential provides a convenient feature for understanding the zero
 For the first case, the potential has local minima corresponding to zero voltage via the 2nd Josephson equation. Meanwhile for the second case, there is no such minima, and so there is a always a change in $\varphi$ and therefore finite voltage.
 
 
-
-## 6. Shapiro Steps:
-Instead of having only a DC driving current $i_{dc}$ (which is $i$ in previous context), we can also drive the junction with an AC current, $i_{ac}$. Including this term gives us the following RCSJ equation:
-
-```math
-$$
-\begin{align}
-\frac{d^{2}{\varphi}}{d\tau^{2}}+\alpha  \frac{d{\varphi}}{d\tau}+\sin(\varphi)=i_{DC}+i_{AC}\sin(\Omega \tau)
-\end{align}
-$$
-```
-
-Where $\Omega=\frac{\omega_{drive}}{\omega_{p}}$ and $\omega_{drive}$ is the frequency of the AC current.
-
-For reasons outside of the scope of this section, the frequency of the Josephson Junction caused by the voltage $V$ becomes locked to integer multiples of the driving frequency $\Omega$. This leads to a quantization of the I-V curve known as Shapiro Steps.
-
-
 # Basic Usage
+After installing the pakages listed in the 'Getting Started' section, you are now ready to download the zip containing all code from this repository or any specific folders/files as described below. 
+
+### FOR EXAMPLE USAGE
+
 The folder titled `RCSJ Basis` outlines the classes and methods we use that form the basis for exploring JJs. The foundational python file of this project is `RCSJ_Core.py`, which contains the classes `RCSJParams`, `RCSJModel`, and `RCSJSolve`. These classes work sequentially to set up, model, and solve the relevant ODEs respectively.
 
 Also in `RCSJ Basis` are the files `single_junction.py` and `coupled_junction.py`, which lay the groundwork for modeling hydrogen and helium by defining the classes `RCSJ` and `CoupledRCSJ`. These classes describe and extend the single Josephson junction governed by the standard RCSJ differential equation, with parameters such as $I_c, R, C$ and external bias currents specified upon initialization. The `RCSJ` implementation serves as the simplest example of phase dynamics in an anharmonic potential, while `CoupledRCSJ` generalizes the model to two interacting phases through capacitive coupling, enabling multi-degree-of-freedom behavior analogous to multi-electron systems.
@@ -221,6 +212,9 @@ Also in `RCSJ Basis` are the files `single_junction.py` and `coupled_junction.py
 Beyond the core RCSJ models, the repository contains higher-level files that connect these junction dynamics to artificial atomic analogues. The files `artificial_hydrogen.py` and `artificial_helium.py` build directly on the `single_junction` and `coupled_junction` classes to construct simplified hydrogen-like and helium-like systems respectively. These scripts not only initialize and solve the corresponding RCSJ models, but also include routines to visualize the time evolution of the phase variables, plot the effective potential landscapes, and compare these classical junction-based potentials to their real atomic counterparts.
 
 In this organization, the physics and numerics of the RCSJ model remain isolated within `RCSJ_Core.py`, the concrete physical systems (single and coupled junctions) are defined in their own dedicated modules, and the artificial atom files act as application-level examples that tie everything together. This structure keeps the codebase clear, extensible, and easy to navigate for anyone wishing to explore Josephson junction dynamics or build upon the artificial-atom analogies developed in this project.
+
+### EXAMPLE USAGE
+Within all python files besides `RCSJ_Core`, there will be a section at the bottom that gives a resonable basic use case. Please use these cases (particularly those of the files in the `Models` folder) as a starting point before changing parameters.
 
 ### Directory Structure:
 ```
