@@ -214,6 +214,8 @@ In this organization, the physics and numerics of the RCSJ model remain isolated
 ### EXAMPLE USAGE
 Within all python files besides `RCSJ_Core`, there will be a section at the bottom that gives a resonable basic use case. Please use these cases (particularly those of the files in the `Models` folder) as a starting point before changing parameters.
 
+To save animations, you will need to uncomment the lines that do so. I recommend using `CTRL f` "Pillow" to find them (as we use pillowwriter soley for this purpose).
+
 ### Directory Structure of python files:
 ```
 Models/
